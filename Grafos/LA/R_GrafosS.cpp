@@ -164,6 +164,52 @@ class Grafo
                 cola.pop();
             }
         }
+    
+        void Print_Camino(V v1, V v2)
+        {
+            Vertex<V, E> *p = find_Vertex(v1);
+            Vertex<V, E> *q = find_Vertex(v2);
+
+            if (p && q){
+                //cout<<"\n En DFS >> \n";
+                std::unordered_set<V> black;
+                //std::queue<V> camino;
+                for(auto it= m_grafo.begin(); it!=m_grafo.end(); ++it )
+                    if(black.find(it->m_Dato) == black.end())
+                    {
+                        std::queue<V> camino;
+                        black.insert(it->m_Dato);
+                        //cout<<" -> "<<it->m_Dato;
+                        camino.push(it->m_Dato);
+                        //Print_Camino(camino);
+                        Print_Camino(&(*it), (q), black, camino);
+                    }
+                
+            }   
+        }
+        void Print_Camino(Vertex<V,E>* _v, Vertex<V,E>* _v2, unordered_set<V>& _black, queue<V> _camino)
+        {
+            for(auto it2 = _v->m_Aristas.begin(); it2!=_v->m_Aristas.end(); ++it2)
+                if(_black.find((it2->m_pVertices)->m_Dato) == _black.end())
+                {
+                    std::queue<V> camino = _camino;
+                    _black.insert((it2->m_pVertices)->m_Dato);
+                    //cout<<" -> "<<it2->m_pVertices->m_Dato;            
+                    camino.push((it2->m_pVertices)->m_Dato);
+                    if(it2->m_pVertices == _v2) Print_Camino(camino);
+                    //Print_Camino(camino);
+                    Print_Camino(it2->m_pVertices, _v2, _black, camino);
+                }
+        }
+        void Print_Camino(queue<V> _camino)
+        {
+            cout<<"\n Print_Camino "<<endl;
+            while(!_camino.empty())
+            {
+                cout<<" -> "<<_camino.front();
+                _camino.pop();
+            }
+        }
 
 };
 int main()

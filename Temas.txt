@@ -2,7 +2,7 @@ LSE
 LDE
 DSE**
 Lista Circular
-Arboles Binarios
+
 Árboles Binarios Equilibrados
 	Arboles AVL
 	Arboles RB
