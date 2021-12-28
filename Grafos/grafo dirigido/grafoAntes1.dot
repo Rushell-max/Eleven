@@ -1,0 +1,22 @@
+digraph G{
+Arequipa;
+Arequipa -> Cuzco[label=250];
+Arequipa -> Puno[label=20];
+Lima;
+Lima -> Arequipa[label=160];
+Lima -> Tacna[label=15];
+Cuzco;
+Cuzco -> Moquegua[label=160];
+Puno;
+Puno -> Cuzco[label=160];
+Puno -> Tacna[label=500];
+Ica;
+Ica -> Lima[label=10];
+Ica -> Tacna[label=160];
+Tacna;
+Tacna -> Moquegua[label=160];
+Moquegua;
+Moquegua -> Arequipa[label=160];
+Moquegua -> Puno[label=160];
+Moquegua -> Ica[label=160];
+}
