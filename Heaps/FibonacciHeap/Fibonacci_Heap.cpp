@@ -30,11 +30,12 @@ class Fibonaci_Heap
      //private:
        list< NodoF<T> * >  m_Roots;
        NodoF<T>         *  m_pMin;
+       int                 m_size;
      private:
        void Compactar(); // O(log(n))
        NodoF<T>  * Unir(NodoF<T> * p ,NodoF<T> * q );  // O(1)
      public:
-      Fibonaci_Heap(){ m_pMin = 0; };
+      Fibonaci_Heap(){ m_pMin = 0; m_size=0;};
       ~Fibonaci_Heap(){};
       /**************************************/
       void Insert(T d); // O(1))
@@ -69,6 +70,7 @@ void Fibonaci_Heap<T>::Insert(T d) // O(1)
     NodoF<T> * pNew = new NodoF<T>(d);
     if (!m_pMin || d < m_pMin->m_Dato) m_pMin = pNew;
     m_Roots.push_back(pNew);
+    m_size++;
 }
 
 template<class T>
@@ -83,6 +85,7 @@ void Fibonaci_Heap<T>::Extrac_Min() // O(log(n))
     }
 
     m_Roots.remove(m_pMin);
+    m_size--;
     Compactar();
 
     m_pMin = m_Roots.front();
@@ -128,7 +131,7 @@ NodoF<T> * Fibonaci_Heap<T>::GetMin()// O(1)
 template<class T>
 void Fibonaci_Heap<T>::Compactar() // O(log(n))
 {
-    int size = 10000;
+    const int size = ceil(log2(m_size));
     NodoF<T> * vec[size];
     for (int i = 0; i < size; i++)  vec[i] = 0;
 
