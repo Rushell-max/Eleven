@@ -1,7 +1,7 @@
 # ELEVEN
 Amamos la cancion Eleven de IVE :D En honor a ellas y a las tuais.
 
-PERO NADA NI NADIE SE COMPARA A LAS <3 AGUA BELLA <3 PARA TODO EL PERÚ
+PERO NADA SE COMPARA A LAS <3 AGUA BELLA <3 PARA TODO EL PERÚ
 
 TEMAS!!!!!!
  - LSE
