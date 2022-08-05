@@ -10,11 +10,12 @@
 
 template<class V,class E>class Vertex;
 
+// grafo no dirigido
 template <class V, class E>
-class Grafo                     // no dirigido
+class Grafo                     
 {
 private:
-    std::list<Vertex<V, E>> m_grafo;
+    std::list<Vertex<V, E>> m_grafo;    // lista de adyacencia
 public:
     Grafo(){}
     Vertex<V, E> *find_Vertex(V);
@@ -22,22 +23,26 @@ public:
     void Insert_Arista(V , V , E );
 
     void delete_vertex(V);                
-    void delete_Arista(V , V , E );      
+    void delete_Arista(V , V , E ); 
     bool esVacio();             
     bool existeVertex(V);   
     bool sonAdyacentes(V ,V);   
 
+    // muestra lista de adyacencia
     void verAdyacencias();
 
+    // grafica grafo
     void graficar(std::string);    
 
+    // busqueda profundidad
     void DFS();   
     void DFS_visit(Vertex<V,E>* ,std::unordered_set<V>& ); 
+    // busqueda en profundidad iterativo (pila)
     void DFS_I();
+    // busqueda en anchura (cola)
     void BFS();
-    void solve(std::pair<int,int>&);
-
-    std::map<V,int> Dijkstra(V);
+    
+    std::map<V,int> Dijkstra(V);    
     void shortestPath(V, V);
 
     void Kruskal();
@@ -50,7 +55,7 @@ template<class V,class E>
 Vertex<V, E> *Grafo<V,E>::find_Vertex(V v)
 {
     Vertex<V, E> *p = nullptr;
-    for( auto it = m_grafo.begin() ; it!=m_grafo.end() ; ++it )
+    for( auto it = m_grafo.begin() ; it!=m_grafo.end() ; ++it )     // recorre lista adyacencia
         if ( it->m_Dato == v )
             p = &(*it);
     return p;
@@ -68,7 +73,7 @@ void Grafo<V,E>::Insert_Arista(V v1, V v2, E Ar)
     Vertex<V, E> *p = find_Vertex(v1);
     Vertex<V, E> *q = find_Vertex(v2);
 
-    if (p && q)
+    if (p && q) // si ambos vertices existen
     {
         p->m_Aristas.push_back(Edge<V, E>(Ar, q));
         q->m_Aristas.push_back(Edge<V, E>(Ar, p));
@@ -79,12 +84,14 @@ template<class V,class E>
 void Grafo<V,E>::delete_vertex(V dato)
 {
     Vertex<V,E>* p = find_Vertex(dato);
-    for(auto it = m_grafo.begin(); it!=m_grafo.end() ; ++it)
+    for(auto it = m_grafo.begin(); it!=m_grafo.end() ; ++it)        // recorre lista adyacencia
     {
-        for(auto it2 = it->m_Aristas.begin() ; it2!=it->m_Aristas.end() ; ++it2)
+        for(auto it2 = it->m_Aristas.begin() ; it2!=it->m_Aristas.end() ; )    // recorre lista de aristas
         {
             if(it2->m_pVertes->m_Dato == dato)
-                it->m_Aristas.erase(it2);
+                it2 = it->m_Aristas.erase(it2);     // elimina puntero al vertice adyacente
+            else
+                ++it2;
         }
     }
     m_grafo.remove(*p);
@@ -95,14 +102,22 @@ void Grafo<V,E>::delete_Arista(V v1, V v2, E dato)
 {
     Vertex<V, E> *p = find_Vertex(v1);
     Vertex<V, E> *q = find_Vertex(v2);
-    if(p && q)
+    if(p && q)      // si ambos vertices existen
     {
-        for( auto it = p->m_Aristas.begin() ; it!=p->m_Aristas.end() ; ++it )
-            if( it->m_Dato == dato )
-                p->m_Aristas.erase(it);
-        for( auto it = q->m_Aristas.begin() ; it!=q->m_Aristas.end() ; ++it )
-            if( it->m_Dato == dato )
-                q->m_Aristas.erase(it);
+        for( auto it = p->m_Aristas.begin() ; it!=p->m_Aristas.end() ; )    // busca en la lista de v1
+        {
+            if( it->m_Dato == dato && it->m_pVertes == q)            
+                it = p->m_Aristas.erase(it);    // borra arista
+            else
+                ++it;
+        }
+        for( auto it = q->m_Aristas.begin() ; it!=q->m_Aristas.end() ; )    // busca en la lista de v2
+        {
+            if( it->m_Dato == dato && it->m_pVertes == p )
+                it = q->m_Aristas.erase(it);    // borra arista
+            else
+                ++it;
+        }
     }
 }
 
@@ -130,7 +145,7 @@ bool Grafo<V,E>::sonAdyacentes(V v1,V v2)
     Vertex<V,E>* q = find_Vertex(v2);
     if( p && q )
     {
-        for( auto it = p->m_Aristas.begin() ; it!=p->m_Aristas.end() ; ++it )
+        for( auto it = p->m_Aristas.begin() ; it!=p->m_Aristas.end() ; ++it )   // busca en la lista de v1
         {
             if( it->m_pVertes == q )
                 return true;
@@ -185,7 +200,7 @@ void Grafo<V,E>::DFS()
         {
             gray.insert(it->m_Dato);
             std::cout<<it->m_Dato<<"->";
-            DFS_visit(&(*it),gray);
+            DFS_visit(&(*it),gray);             // agrega todos los vertices adyacentes
         }
     }
     std::cout<<'\n';
@@ -194,13 +209,13 @@ void Grafo<V,E>::DFS()
 template<class V,class E>
 void Grafo<V,E>::DFS_visit(Vertex<V,E>* vertice,std::unordered_set<V>& gray)
 {
-    for( auto it2=vertice->m_Aristas.begin() ; it2!=vertice->m_Aristas.end() ; ++it2 )
+    for( auto it2=vertice->m_Aristas.begin() ; it2!=vertice->m_Aristas.end() ; ++it2 )  // recorre aristas de un vertice
     {
-        if( gray.find((it2->m_pVertes)->m_Dato) == gray.end() )
+        if( gray.find((it2->m_pVertes)->m_Dato) == gray.end() )     // si el vertice adyacente no esta en gray
         {
             gray.insert((it2->m_pVertes)->m_Dato);
             std::cout<<it2->m_pVertes->m_Dato<<"->";
-            DFS_visit(it2->m_pVertes,gray);
+            DFS_visit(it2->m_pVertes,gray);             // agrega vertices adyacentes
         }
     }
 }
@@ -208,8 +223,8 @@ void Grafo<V,E>::DFS_visit(Vertex<V,E>* vertice,std::unordered_set<V>& gray)
 template<class V,class E>
 void Grafo<V,E>::DFS_I()            // DFS -> pila
 {
-    std::stack< Vertex<V,E>* > vertices;
-    std::unordered_set< V > visitados;
+    std::stack< Vertex<V,E>* > vertices;        // pila de punteros a vertices
+    std::unordered_set< V > visitados;          // hash table guarda visitados
     Vertex<V,E>* ver = &(*m_grafo.begin());
     vertices.push( ver );
     visitados.insert(ver->m_Dato);
@@ -218,12 +233,12 @@ void Grafo<V,E>::DFS_I()            // DFS -> pila
     {
         ver = vertices.top();
         vertices.pop();
-        for( auto it2=ver->m_Aristas.begin() ; it2!=ver->m_Aristas.end(); ++it2 )
+        for( auto it2=ver->m_Aristas.begin() ; it2!=ver->m_Aristas.end(); ++it2 )   // recorre lista de aristas
         {
-            if( visitados.find( ( it2->m_pVertes)->m_Dato ) == visitados.end() )
+            if( visitados.find( ( it2->m_pVertes)->m_Dato ) == visitados.end() )    // si no fue visitado
             {
-                vertices.push(it2->m_pVertes);
-                visitados.insert((it2->m_pVertes)->m_Dato);
+                vertices.push(it2->m_pVertes);                  // agrega a la pila
+                visitados.insert((it2->m_pVertes)->m_Dato);     // ahora esta visitado
                 std::cout<<( it2->m_pVertes)->m_Dato <<"->";
             }
         }            
@@ -234,8 +249,8 @@ void Grafo<V,E>::DFS_I()            // DFS -> pila
 template<class V,class E>
 void Grafo<V,E>::BFS()          // BFS -> cola
 {
-    std::queue< Vertex<V,E>* > vertices;
-    std::unordered_set< V > visitados;
+    std::queue< Vertex<V,E>* > vertices;            // cola punteros a vertice
+    std::unordered_set< V > visitados;              // hash table guarda vertices
     Vertex<V,E>* ver = &(*m_grafo.begin());
     vertices.push( ver );
     visitados.insert(ver->m_Dato);
@@ -244,51 +259,17 @@ void Grafo<V,E>::BFS()          // BFS -> cola
     {
         ver = vertices.front();
         vertices.pop();
-        for( auto it2=ver->m_Aristas.begin() ; it2!=ver->m_Aristas.end(); ++it2 )
+        for( auto it2=ver->m_Aristas.begin() ; it2!=ver->m_Aristas.end(); ++it2 )   // recorre lista de aristas
         {
-            if( visitados.find( ( it2->m_pVertes)->m_Dato ) == visitados.end() )
+            if( visitados.find( ( it2->m_pVertes)->m_Dato ) == visitados.end() )    // si no fue visitado
             {
-                vertices.push(it2->m_pVertes);
-                visitados.insert((it2->m_pVertes)->m_Dato);
+                vertices.push(it2->m_pVertes);                  // agrega a la cola
+                visitados.insert((it2->m_pVertes)->m_Dato);     // ahora esta visitado
                 std::cout<<( it2->m_pVertes)->m_Dato <<"->";
             }
         }
     }
     std::cout<<'\n';
-}   
-
-template<class V,class E>
-void Grafo<V,E>::solve(std::pair<int,int>& v)
-{
-    std::queue< Vertex<V,E>* > vertices;
-    std::unordered_set< V* > enCola;
-    std::unordered_set< V* > visitados;
-    Vertex<V,E>* ver = find_Vertex(v);
-    vertices.push( ver );
-    enCola.insert( &(ver->m_Dato) );
-    while( !vertices.empty() )
-    {
-        for( auto it2=ver->m_Aristas.begin() ; it2!=ver->m_Aristas.end(); ++it2 )
-        {
-            if( enCola.find( ( &(it2->m_pVertes)->m_Dato) ) == enCola.end() && visitados.find( &(( it2->m_pVertes)->m_Dato) ) == visitados.end() )
-            {
-                if( it2->m_Dato == 't' )
-                {
-                    std::cout<<"yes\n";
-                    return;
-                }
-                vertices.push(it2->m_pVertes);
-                enCola.insert( &((it2->m_pVertes)->m_Dato) );
-            }
-        }
-        vertices.pop();
-        enCola.erase( &(ver->m_Dato) );
-        visitados.insert( &(ver->m_Dato) );
-        // std::cout<<ver->m_Dato.first<<' '<<ver->m_Dato.second<<"->";
-        if(!vertices.empty())
-            ver = vertices.front();
-    }
-    std::cout<<"no\n";
 }   
 
 template<class V,class E>
@@ -311,8 +292,10 @@ Vertex<V,E>* extractMin( std::map<V,std::pair< int,Vertex<V,E>* >>& Q ){
 template<class V,class E>
 std::map<V,int> Grafo<V,E>::Dijkstra( V v_actual )
 {
-    std::map<V,int> S;                                  // guarda los caminos mas cortos desde el vertice v
-    std::map<V,std::pair< int,Vertex<V,E>* >> Q;        // guarda todos los vertices con sus caminos 
+    // guarda los caminos mas cortos desde el vertice v
+    std::map<V,int> S;                                  // <v, dist min>                   
+    // guarda todos los vertices con sus caminos
+    std::map<V,std::pair< int,Vertex<V,E>* >> Q;        // <v1 <dist min, v2>>
     for( auto it = m_grafo.begin() ; it!=m_grafo.end() ; ++it )     // llena Q con cada vertice
     {
         if( it->m_Dato != v_actual )                                
@@ -394,7 +377,8 @@ bool existeArista( std::multimap<E,std::pair<V,V>>& aristas, V v1, V v2 )       
 template<class V,class E>
 void Grafo<V,E>::Kruskal()
 {
-    std::multimap<E, std::pair<V,V> > aristas;                      // guarda todas las aristas del grafo en orden no decreciente
+    // guarda todas las aristas del grafo en orden no decreciente
+    std::multimap<E, std::pair<V,V> > aristas;                      // <arista, <v1, v2>>
     Grafo<V,E> MST;                                                 // arbol de expansion minima
     for( auto it = m_grafo.begin() ; it != m_grafo.end() ; ++it )   // recorre cada vertice
     {   
@@ -424,9 +408,9 @@ template<class V,class E>
 void Grafo<V,E>::Prim()
 {
     Grafo<V,E> MST;
-    std::set<Vertex<V,E>*> vertices;
-    std::unordered_set<V> Q;
-    for( auto it = m_grafo.begin() ; it!=m_grafo.end() ; ++it )
+    std::set<Vertex<V,E>*> vertices;                // vertices que ya tienen su camino mas corto
+    std::unordered_set<V> Q;                        // vertices que aun no tienen su camino mas corto
+    for( auto it = m_grafo.begin() ; it!=m_grafo.end() ; ++it ) 
     {
         Q.insert( it->m_Dato );
         MST.Insert_Vertex( it->m_Dato );
@@ -438,24 +422,24 @@ void Grafo<V,E>::Prim()
         int min = INT_MAX;
         V v;
         Vertex<V,E>* vMin = nullptr;
-        for( auto it = vertices.begin() ; it != vertices.end() ; ++it )
+        for( auto it = vertices.begin() ; it != vertices.end() ; ++it )         // busca en los vertices que ya tienen camino mas corto
         {
-            for( auto it2 = (*it)->m_Aristas.begin() ; it2!=(*it)->m_Aristas.end() ; ++it2 )
+            for( auto it2 = (*it)->m_Aristas.begin() ; it2!=(*it)->m_Aristas.end() ; ++it2 )    // busca en los vertices adyacentes
             {
-                if( Q.find( it2->m_pVertes->m_Dato ) != Q.end() )
+                if( Q.find( it2->m_pVertes->m_Dato ) != Q.end() )               // si esta en Q, aun no tiene su camino mas corto
                 {
-                    if( it2->m_Dato < min )
+                    if( it2->m_Dato < min )         // peso de la arista menor
                     {
-                        min = it2->m_Dato;
-                        v = (*it)->m_Dato;
-                        vMin = it2->m_pVertes;
+                        min = it2->m_Dato;          // dist min
+                        v = (*it)->m_Dato;          // v1
+                        vMin = it2->m_pVertes;      // v2
                     }
                 }
             }
         }
-        MST.Insert_Arista( v, vMin->m_Dato, min );
-        Q.erase( vMin->m_Dato );
-        vertices.insert( vMin );
+        MST.Insert_Arista( v, vMin->m_Dato, min );      // inserta arista con menos peso
+        Q.erase( vMin->m_Dato );                        // elimina v2
+        vertices.insert( vMin );                        // inserta v2
     }
 
     MST.graficar("Prim.dot");

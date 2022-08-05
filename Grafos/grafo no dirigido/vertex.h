@@ -5,11 +5,14 @@
 
 template <class V, class E>class Edge;
 
+// vertice 
 template <class V, class E>
 class Vertex
 {
 public:
+    // nombre del vertice
     V m_Dato;
+    // lista de vertices adyacentes
     std::list<Edge<V, E>> m_Aristas;
 
 public:
