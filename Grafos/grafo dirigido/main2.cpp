@@ -192,9 +192,9 @@ int main()
     // 2do semestre
 
     MALLA.graficar("MALLA_CURRICULAR_UNSA.dot");
-    MALLA.graficar("MALLA_CURRICULAR_UNSA.dot");
-    system("dot MALLA_CURRICULAR_UNSA.dot -o MALLA_CURRICULAR_UNSA.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
-    system("MALLA_CURRICULAR_UNSA.png");
+    // MALLA.graficar("MALLA_CURRICULAR_UNSA.dot");
+    // system("dot MALLA_CURRICULAR_UNSA.dot -o MALLA_CURRICULAR_UNSA.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
+    // system("MALLA_CURRICULAR_UNSA.png");
 
     cout<<"\nMOSTRAND ORDEN TOPOLOGICO\n";
     MALLA.topologicalSort();

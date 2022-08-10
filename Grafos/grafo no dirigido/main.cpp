@@ -63,8 +63,6 @@ int main()
 
     cout<<"\nGRAFICANDO GRAFO INICIAL\n";
     G.graficar("grafoAntes1.dot");
-    system("dot grafoAntes1.dot -o grafoAntes1.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
-    system("grafoAntes1.png");
 
     cout<<"\nMOSTRANDO RECORRIDO EN ANCHURA\n";
     G.BFS();

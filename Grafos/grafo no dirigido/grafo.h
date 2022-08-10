@@ -3,6 +3,7 @@
 #include <list>
 #include <fstream>
 #include <unordered_set>
+#include <sstream>
 #include <queue>
 #include <map>
 #include <set>
@@ -188,6 +189,17 @@ void Grafo<V,E>::graficar(std::string dir)
     }
     f<<"}";
     f.close();
+
+    std::stringstream dir1(dir);
+    std::string name, ext, aux;
+    std::getline(dir1,aux,'.');
+    name = aux;
+    std::getline(dir1,aux,'.');
+    ext = aux;
+    system(&(("dot "+ dir + " -o " + name + ".png -Tpng")[0]));
+    system(&((name + ".png")[0]));
+    // system("dot grafo.dot -o grafo.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
+    // system("grafo.png");
 }
 
 template<class V,class E>
@@ -400,8 +412,8 @@ void Grafo<V,E>::Kruskal()
         //     MST.Insert_Arista( (it->second).first, (it->second).second , it->first );               // inserta la arista   
     }
     MST.graficar("kruskal.dot");
-    system("dot kruskal.dot -o kruskal.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
-    system("kruskal.png");
+    // system("dot kruskal.dot -o kruskal.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
+    // system("kruskal.png");
 }
 
 template<class V,class E>
@@ -443,8 +455,8 @@ void Grafo<V,E>::Prim()
     }
 
     MST.graficar("Prim.dot");
-    system("dot Prim.dot -o Prim.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
-    system("Prim.png");
+    // system("dot Prim.dot -o Prim.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
+    // system("Prim.png");
 }
 
 #endif

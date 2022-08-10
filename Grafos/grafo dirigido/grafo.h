@@ -3,6 +3,7 @@
 #include <list>
 #include <fstream>
 #include <unordered_set>
+#include <sstream>
 #include <queue>
 #include <map>
 #include <set>
@@ -181,6 +182,17 @@ void Grafo<V,E>::graficar(std::string dir)
     }
     f<<"}";
     f.close();
+
+    std::stringstream dir1(dir);
+    std::string name, ext, aux;
+    std::getline(dir1,aux,'.');
+    name = aux;
+    std::getline(dir1,aux,'.');
+    ext = aux;
+    system(&(("dot "+ dir + " -o " + name + ".png -Tpng")[0]));
+    system(&((name + ".png")[0]));
+    // system("dot grafo.dot -o grafo.png -Tpng");           //dot grafo.dot -o grafo.png -Tpng
+    // system("grafo.png");
 }
 
 template<class V,class E>
