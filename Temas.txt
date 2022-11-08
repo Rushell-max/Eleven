@@ -8,6 +8,20 @@ Arboles Binarios
 	Arboles RB
 	Segment Tree
 	Interval Tree
+Algoritmos en Programacion competitiva
+	Estructuras de datos Avanzados
+		Binary Indexed Tree (Fenwick Tree) range update and range query (RURQ)
+		Binary Indexed Tree (Fenwick Tree) range update and point query (RUPQ)
+		Segment Tree
+		Segment Tree with Lazy Propagation
+		Sparse Table
+		Static RSQ
+	Grafos
+		Grafos bipartitos
+		Ciclos en Grafos dirigidos aciclicos (DAG)
+		DFS, BFS
+		Disjoint Set Union (DSU) o Union Find Algorithm
+		Topological Sort
 Heaps
 	Binary Heap
 	Binomial Heap
