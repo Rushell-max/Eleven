@@ -46,10 +46,10 @@ void ini()
         for(int j=0 ; j + ( 1 << i) <=n ; ++j)          // j + potencia de 2, evita salir rango
         {   // compara fila anterior columna j con fila anterior columna j + 2^(i-1)
             if( arr[st[i-1][j]] <= arr[st[i-1][j + ( 1 << (i-1) )]] )       
-                st[i][j] = st[i-1][j];
+                st[i][j] = st[i-1][j];                  // indices
             else
-                st[i][j] = st[i-1][j + ( 1 << (i-1))];
-            // st[i][j] = min( st[i-1][j] , st[i-1][j + ( 1 << (i-1) )] );
+                st[i][j] = st[i-1][j + ( 1 << (i-1))];  // indice
+            // st[i][j] = min( st[i-1][j] , st[i-1][j + ( 1 << (i-1) )] );  // valor
         }
     }
 }
