@@ -22,6 +22,12 @@ Algoritmos en Programacion competitiva
 		DFS, BFS
 		Disjoint Set Union (DSU) o Union Find Algorithm
 		Topological Sort
+		Dijsktra
+		LCA (lowest common ancestor)
+		Emparejamiento bipartito de cardinalidad maxima MCBM (MVC maximun vertex cover)
+		Prim, Kruskall
+		Componentes fuertemente conexos (SCC)
+		articulaciones y puentes
 Heaps
 	Binary Heap
 	Binomial Heap
